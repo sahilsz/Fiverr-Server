@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
+import authRoute from "./routes/auth.route.js";
 
 dotenv.config();
 
@@ -23,6 +24,8 @@ const connect = async function () {
   }
 };
 
+// Routes
+app.use("/api/auth", authRoute);
 
 app.listen(port, () => {
   connect();
