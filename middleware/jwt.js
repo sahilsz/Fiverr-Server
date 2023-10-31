@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-import createError from "../api/utils/createError.js";
+
+import createError from "../utils/createError.js";
 
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.accessToken;
@@ -8,7 +9,7 @@ export const verifyToken = (req, res, next) => {
   jwt.verify(token, process.env.JWT_KEY, (err, payload) => {
     if (err) return next(createError(403, "Token is not valid!"));
 
-    req.userId = payload.userId;
+    req.userId = payload.id;
     req.isSeller = payload.isSeller;
 
     next();
