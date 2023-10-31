@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   try {
@@ -25,8 +26,23 @@ export const login = async (req, res) => {
     const isCorrect = bcrypt.compareSync(req.body.password, user.password);
     if (!isCorrect) return res.status(400).send("Wrong password or username!");
 
+    const jwt_key = process.env.JWT_KEY;
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+        isSeller: user.isSeller,
+      },
+      jwt_key
+    );
+
     const { password, ...info } = user._doc;
-    return res.status(200).send(info);
+    return res
+      .cookie("accessToken", token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .send(info);
   } catch (err) {
     console.log(err);
     return res.status(500).send("Something went wrong!");

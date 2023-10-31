@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import authRoute from "./routes/auth.route.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -23,6 +24,10 @@ const connect = async function () {
     console.log(error);
   }
 };
+
+// Middlewares
+app.use(express.json());
+app.use(cookieParser());
 
 // Routes
 app.use("/api/auth", authRoute);
