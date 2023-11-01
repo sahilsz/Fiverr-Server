@@ -1,9 +1,10 @@
-import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import createError from "../api/utils/createError.js";
 
-export const register = async (req, res, next) => {
+import User from "../models/user.model.js";
+import createError from "../utils/createError.js";
+
+export const registerUserHandler = async (req, res, next) => {
   try {
     const hash = bcrypt.hashSync(req.body.password, 10);
     const newUser = new User({
@@ -18,7 +19,7 @@ export const register = async (req, res, next) => {
   }
 };
 
-export const login = async (req, res, next) => {
+export const loginUserHandler = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
 
@@ -50,4 +51,16 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const logout = async (req, res) => {};
+export const logoutUserHandler = async (req, res, next) => {
+  try {
+    res
+      .clearCookie("accessToken", {
+        sameSite: "none",
+        secure: true,
+      })
+      .status(200)
+      .send("User has been logged out!");
+  } catch (err) {
+    next(err);
+  }
+};
