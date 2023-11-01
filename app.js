@@ -1,5 +1,8 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import PinoHttp from "pino-http";
+
+import logger from "./utils/logger.js";
 
 // Route Import
 import gigRoute from "./routes/gig.route.js";
@@ -9,13 +12,13 @@ import orderRoute from "./routes/order.route.js";
 import reviewRoute from "./routes/review.route.js";
 import messageRoute from "./routes/message.route.js";
 import conversationRoute from "./routes/conversation.route.js";
-// import winston, { transports, format } from "winston";
 
 const app = express();
 
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
+app.use(PinoHttp({ logger }));
 
 // Routes
 app.use("/api/users", userRoute);

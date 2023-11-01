@@ -2,11 +2,11 @@
   "name": "fiverr-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "test": "jest --verbose",
-    "start": "nodemon index.js",
+    "start": "nodemon server.js",
     "test:watch": "jest --verbose --watchall"
   },
   "keywords": [],
@@ -19,7 +19,8 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.0",
-    "pino": "^8.16.1"
+    "pino": "^8.16.1",
+    "pino-http": "^8.5.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.23.2",
