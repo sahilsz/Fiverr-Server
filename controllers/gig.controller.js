@@ -19,6 +19,20 @@ export const newGigHandler = async (req, res, next) => {
   }
 };
 
+export const deleteGigHandler = async (req, res, next) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+    if (gig.userId !== req.userId)
+      return next(createError(403, "You can delete only your gig!"));
+
+    await Gig.findByIdAndDelete(req.params.id);
+
+    return res.status(200).send("Gig has been deleted!");
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const getGigHandler = async (req, res, next) => {
   try {
     const gig = await Gig.findById(req.params.id);
