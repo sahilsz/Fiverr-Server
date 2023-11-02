@@ -18,3 +18,16 @@ export const newGigHandler = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getGigHandler = async (req, res, next) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+
+    if (!gig) next(createError(404, "Gig not found!"));
+
+    return res.status(200).json(gig);
+  } catch (err) {
+    next(err);
+  }
+};
+
