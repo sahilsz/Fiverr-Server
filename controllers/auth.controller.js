@@ -4,6 +4,15 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 import createError from "../utils/createError.js";
 
+/**
+ * It registers a new user using the data from the request body and returns the created user in the response.
+ * @param req - The request object. This object represents the HTTP request and has properties for the
+ * request query string, parameters, body, HTTP headers, and so on.
+ *
+ * @param {Object} res - The response object.
+ * @param {string} next
+ * @async
+ */
 export const registerUserHandler = async (req, res, next) => {
   try {
     const hash = bcrypt.hashSync(req.body.password, 10);
@@ -12,8 +21,10 @@ export const registerUserHandler = async (req, res, next) => {
       password: hash,
     });
 
-    await newUser.save();
-    res.status(201).send("User has been created.");
+    const user = await newUser.save();
+    const { password, ...info } = user._doc;
+
+    res.status(201).send(info);
   } catch (err) {
     next(err);
   }
@@ -43,6 +54,8 @@ export const loginUserHandler = async (req, res, next) => {
     return res
       .cookie("accessToken", token, {
         httpOnly: true,
+        sameSite: "none",
+        secure: "false",
       })
       .status(200)
       .send(info);
@@ -59,7 +72,7 @@ export const logoutUserHandler = async (req, res, next) => {
         secure: true,
       })
       .status(200)
-      .send("User has been logged out!");
+      .send({ msg: "User has successfully logged out!" });
   } catch (err) {
     next(err);
   }
