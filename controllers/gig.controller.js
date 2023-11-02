@@ -45,3 +45,27 @@ export const getGigHandler = async (req, res, next) => {
   }
 };
 
+export const getAllGigsHandler = async (req, res, next) => {
+  // const filters = {
+  //   cat:"design",
+  //   price:{$gt:100},
+  //   title: {$regex: "Gig 2", $options: "i"}
+  // }
+  const q = req.query;
+  const filters = {
+    ...(q.userId && { userId: q.userId }),
+    ...(q.cat && { cat: q.cat }),
+    ...((q.min || q.max) && {
+      price: { ...(q.min && { $gt: q.min }), ...(q.max && { $lt: q.max }) },
+    }),
+    ...(q.search && { title: { $regex: q.search, $options: "i" } }),
+  };
+
+  try {
+    const gigs = await Gig.find(filters).sort({ [q.sort]: -1 });
+
+    return res.status(200).json(gigs);
+  } catch (err) {
+    next(err);
+  }
+};
