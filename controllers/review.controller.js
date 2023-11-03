@@ -36,3 +36,13 @@ export const createReviewHandler = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getReviewHandler = async (req, res, next) => {
+  try {
+    const reviews = await Review.find({ gigId: req.params.id });
+
+    return res.status(200).send(reviews);
+  } catch (err) {
+    next(err);
+  }
+};
