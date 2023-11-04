@@ -31,9 +31,9 @@ app.use(PinoHttp({ logger }));
 // Routes
 app.use("/api/users", userRoute);
 app.use("/api/gigs", gigRoute);
-app.use("/api/orders", conversationRoute);
+app.use("/api/orders", orderRoute);
 app.use("/api/conversations", messageRoute);
-app.use("/api/messages", orderRoute);
+app.use("/api/messages", conversationRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/auth", authRoute);
 
