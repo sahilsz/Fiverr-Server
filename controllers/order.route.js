@@ -24,3 +24,11 @@ export const createOrderHandler = async (req, res, next) => {
   }
 };
 
+export const getOrdersHandler = async (req, res, next) => {
+  const orders = await Order.find({
+    ...(req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }),
+    isCompleted: true,
+  });
+
+  return res.status(200).json(orders);
+};
