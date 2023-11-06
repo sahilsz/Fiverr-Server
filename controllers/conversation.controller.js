@@ -32,6 +32,25 @@ export const createConversationHandler = async (req, res, next) => {
   }
 };
 
+export const updateConversationHandler = async (req, res, next) => {
+  try {
+    const conv = await Conversation.findOneAndUpdate(
+      { id: req.params.id },
+      {
+        $set: {
+          readByBuyer: true,
+          readBySeller: true,
+          //   ...(req.isSeller ? {readBySeller: true} : readByBuyer: true)
+        },
+      },
+      {
+        new: true, // returns update query
+      }
+    );
+
+    return res.status(200).send(conv);
+  } catch (err) {}
+};
 
 export const getConversationHandler = async (req, res, next) => {
   try {

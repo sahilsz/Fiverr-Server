@@ -4,6 +4,7 @@ import {
   getConversationHandler,
   getConversationsHandler,
   createConversationHandler,
+  updateConversationHandler,
 } from "../controllers/conversation.controller.js";
 
 const router = express.Router();
@@ -11,5 +12,6 @@ const router = express.Router();
 router.get("/", verifyToken, getConversationsHandler);
 router.get("/:id", verifyToken, getConversationHandler);
 router.post("/", verifyToken, createConversationHandler);
+router.put("/:id", verifyToken, updateConversationHandler);
 
 export default router;
