@@ -20,7 +20,12 @@ const app = express();
 // app.use(cors({ origin: ["*"], credentials: true }));
 app.use(
   cors({
-    origin: ["http://127.0.0.1:5173", "http://127.0.0.1:9999"],
+    origin: [
+      "http://127.0.0.1:5173",
+      "http://127.0.0.1:9999",
+      "*",
+      "http://localhost:5173",
+    ],
     credentials: true,
   })
 );
@@ -32,8 +37,8 @@ app.use(PinoHttp({ logger }));
 app.use("/api/users", userRoute);
 app.use("/api/gigs", gigRoute);
 app.use("/api/orders", orderRoute);
-app.use("/api/conversations", messageRoute);
-app.use("/api/messages", conversationRoute);
+app.use("/api/messages", messageRoute);
+app.use("/api/c", conversationRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/auth", authRoute);
 
