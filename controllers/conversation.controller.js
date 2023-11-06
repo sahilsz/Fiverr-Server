@@ -32,3 +32,17 @@ export const createConversationHandler = async (req, res, next) => {
   }
 };
 
+
+export const getConversationHandler = async (req, res, next) => {
+  try {
+    const conv = await Conversation.findOne({ id: req.params.id }).sort({
+      updatedAt: -1,
+    });
+
+    if (!conv) return next(createError(404, "No conversation yet!"));
+
+    return res.status(200).send(conv);
+  } catch (err) {
+    next(err);
+  }
+};
