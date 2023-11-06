@@ -29,3 +29,14 @@ export const createMessageHandler = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getMessagesHandler = async (req, res, next) => {
+  try {
+    const messages = await Message.find({ conversationId: req.params.id });
+
+    console.log("messages", messages);
+    return res.status(200).send(messages);
+  } catch (err) {
+    next(err);
+  }
+};
